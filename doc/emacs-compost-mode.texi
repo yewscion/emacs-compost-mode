@@ -1,11 +1,11 @@
-@c Variables: emacs-compost-mode Project Name project-category
+@c Variables: emacs-compost-mode Compost Mode Emacs
 \input texinfo
 @c -*-texinfo-*-
 
 @c %**start of header
 @setfilename emacs-compost-mode.info
 @documentencoding UTF-8
-@settitle Project Name Reference Manual
+@settitle Compost Mode Reference Manual
 @c %**end of header
 
 @include version.texi
@@ -21,13 +21,13 @@ copy of the license is included in the section entitled ``GNU Free
 Documentation License''.
 @end copying
 
-@dircategory project-category
+@dircategory Emacs
 @direntry
-* Project Name: (emacs-compost-mode).   
+* Compost Mode: (emacs-compost-mode).   
 @end direntry
 
 @titlepage
-@title The Project Name Manual
+@title The Compost Mode Manual
 @author Christopher Rodriguez
 
 @page
@@ -40,12 +40,12 @@ Documentation License''.
 
 @c *********************************************************************
 @node Top
-@top Project Name
+@top Compost Mode
 
-This document describes Project Name version @value{VERSION}.
+This document describes Compost Mode version @value{VERSION}.
 
 @menu
-* Introduction::                Why Project Name?
+* Introduction::                Why Compost Mode?
 
 * Concept Index::               Concepts Used, and Where.
 * Programming Index::           Functions, Variables, Etc.
@@ -66,11 +66,21 @@ Introduction
 @node Introduction, Concept Index, Top, Top
 @chapter Introduction
 
-The purpose of this library is .
+The purpose of this library is to implement one variation of the
+Zettelkasten method using both plain-text and org-mode files while
+leveraging underlying systems like git and ripgrep to make the note-taking
+process as smooth as possible.
 
-It was started when .
+It was started when it was shown that deft begins to slow down after only
+about 500 entries—One downside of the Zettelkasten method is the sheer
+volume of notes it helps one create, and such a low limit prevents it from
+being useful for those who like to move at the speed of thought.
 
-The hope is that .
+The hope is that it helps create a system allowing for an
+entirely-text-based, lightening-fast note-taking system that still has all
+of the features of common non-Emacs apps such as Obsidian. That said, this
+library is also the implementation of one person's note-taking system, and
+therefore it may not be the only such system that exists in GNU Emacs.
 
 @menu
 
