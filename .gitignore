@@ -50,7 +50,6 @@
 /doc/*.vr
 /doc/*.vrs
 /doc/stamp-vti
-/doc/version.texi
 /doc/version-*.texi
 /pre-inst-env
 /test-env
