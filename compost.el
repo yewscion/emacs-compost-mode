@@ -41,6 +41,7 @@ pdf-tools to create a directory of notes."
   :safe 'stringp
   :group 'compost)
 
+;;;###autoload
 (defun compost-search (regex)
   "Search through the compost directory for matches of REGEX.
 
@@ -65,6 +66,7 @@ arguments, one obtained through a prompt."
   (let ((deadgrep-display-buffer-function #'switch-to-buffer))
     (deadgrep regex compost-directory)))
 
+;;;###autoload
 (defun compost-add (&optional time)
   "Adds a new entry into the configured 'compost-directory.
 
@@ -91,6 +93,7 @@ local time, in which the user can add notes."
   (interactive)
   (find-file (file-truename (concat compost-directory "/" (compost-date time) ".txt"))))
 
+;;;###autoload
 (defun compost-transplant ()
   "Kill the current buffer with guardrails inserted before and
 after, then yank it into the current 'other window'. Meant to be
@@ -123,11 +126,13 @@ switches again."
     (compost--yank-as-comment)
     (other-window 1)))
 
+;;;###autoload
 (defun compost-annotation-done (@click)
   (interactive "e")
   (let ((p1 (event-start @click)))
     (pdf-annot-put (pdf-annot-at-position p1) 'color "#006400")))
 
+;;;###autoload
 (defun compost-annotation-new (@click)
   (interactive "e")
   (let ((p1 (event-start @click)))
