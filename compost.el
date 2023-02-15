@@ -273,6 +273,25 @@ switches again."
   (let ((p1 (event-start @click)))
     (pdf-annot-add-text-annotation p1)))
 
+;;;###autoload
+(defvar compost-prefix-map
+  (let ((map (make-keymap)))
+    (define-key map (kbd "m") #'compost-add-meso)
+    (define-key map (kbd "t") #'compost-add-thermo)
+    (define-key map (kbd "c") #'compost-add-curing)
+    (define-key map (kbd "C-m") #'compost-search-meso)
+    (define-key map (kbd "C-t") #'compost-search-thermo)
+    (define-key map (kbd "C-c") #'compost-search-curing)
+    (define-key map (kbd "w") #'compost-transplant)
+    (define-key map (kbd "<mouse-1>") #'compost-annotation-new)
+    (define-key map (kbd "<mouse-3>") #'compost-annotation-done)
+    map)
+  "Keymap for Compost Prefix")
+
+;;;###autoload
+(define-prefix-command 'compost-prefix compost-prefix-map "Compost")
+
+
 (defun compost-date (&optional time)
   "Generates a datecode equivalent to the default for compost entries.
 
