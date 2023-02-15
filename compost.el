@@ -35,15 +35,27 @@ notetaking in GNU Emacs, leveraging org-mode, plain-text, and
 pdf-tools to create a directory of notes."
   :group 'text)
 
-(defcustom compost-directory (expand-file-name "~/.compost/")
+(defcustom compost-meso-directory (expand-file-name "~/.compost/meso")
+  "The directory for storing Your compost. Shouldn't end with a slash."
+  :type 'directory
+  :safe 'stringp
+  :group 'compost)
+
+(defcustom compost-thermo-directory (expand-file-name "~/.compost/thermo")
+  "The directory for storing Your compost. Shouldn't end with a slash."
+  :type 'directory
+  :safe 'stringp
+  :group 'compost)
+
+(defcustom compost-curing-directory (expand-file-name "~/.compost/curing")
   "The directory for storing Your compost. Shouldn't end with a slash."
   :type 'directory
   :safe 'stringp
   :group 'compost)
 
 ;;;###autoload
-(defun compost-search (regex)
-  "Search through the compost directory for matches of REGEX.
+(defun compost-search-meso (regex)
+  "Search through the compost \"meso\" directory for matches of REGEX.
 
 This is an ACTION.
 
@@ -62,13 +74,63 @@ Impurities
 
 Used entirely for side effects: Calls 'deadgrep' using two
 arguments, one obtained through a prompt."
-  (interactive "sCompost Search: ")
+  (interactive "sCompost Meso Search: ")
   (let ((deadgrep-display-buffer-function #'switch-to-buffer))
-    (deadgrep regex compost-directory)))
+    (deadgrep regex compost-meso-directory)))
 
 ;;;###autoload
-(defun compost-add (&optional time)
-  "Adds a new entry into the configured 'compost-directory.
+(defun compost-search-thermo (regex)
+  "Search through the compost \"thermo\" directory for matches of REGEX.
+
+This is an ACTION.
+
+Arguments
+=========
+
+REGEX <string>: A regular expression for which to search for matches.
+
+Returns
+=======
+
+Return value of call to 'deadgrep'.
+
+Impurities
+==========
+
+Used entirely for side effects: Calls 'deadgrep' using two
+arguments, one obtained through a prompt."
+  (interactive "sCompost Thermo Search: ")
+  (let ((deadgrep-display-buffer-function #'switch-to-buffer))
+    (deadgrep regex compost-thermo-directory)))
+
+;;;###autoload
+(defun compost-search-curing (regex)
+  "Search through the compost \"curing\" directory for matches of REGEX.
+
+This is an ACTION.
+
+Arguments
+=========
+
+REGEX <string>: A regular expression for which to search for matches.
+
+Returns
+=======
+
+Return value of call to 'deadgrep'.
+
+Impurities
+==========
+
+Used entirely for side effects: Calls 'deadgrep' using two
+arguments, one obtained through a prompt."
+  (interactive "sCompost Curing Search: ")
+  (let ((deadgrep-display-buffer-function #'switch-to-buffer))
+    (deadgrep regex compost-curing-directory)))
+
+;;;###autoload
+(defun compost-add-to-meso (&optional entry)
+  "Adds a new entry into the configured 'compost-meso-directory.
 
 This is an ACTION.
 
@@ -91,7 +153,80 @@ Used entirely for Side Effects: Creates a new buffer associated
 with a file in the compost directory for the current second in
 local time, in which the user can add notes."  
   (interactive)
-  (find-file (file-truename (concat compost-directory "/" (compost-date time) ".txt"))))
+  (let* ((entry
+         (caar (ebib-read-entry "Compost Meso for Entry: "
+                                ebib--databases 'multiple)))
+         (filename (concat compost-meso-directory "/" entry ".org")))
+    (progn
+      (find-file
+       (file-truename
+        filename))
+      (if (not (file-exists-p filename))
+          (insert (concat "* " entry "\n"
+                          "[[ebib:" entry "][Ebib Entry]]\n"))))))
+
+;;;###autoload
+(defun compost-add-to-thermo (&optional time)
+  "Adds a new entry into the configured 'compost-thermo-directory.
+
+This is an ACTION.
+
+Arguments
+=========
+
+TIME <number> or <list> or <nil>: A valid time, as specified by
+format-time-string. Usually either UNIX seconds or '(HI LO US
+PS). nil will use the current time.
+
+Returns
+=======
+
+Undefined.
+
+Impurities
+==========
+
+Used entirely for Side Effects: Creates a new buffer associated
+with a file in the compost directory for the current second in
+local time, in which the user can add notes."  
+  (interactive)
+  (find-file
+   (file-truename
+    (concat compost-thermo-directory "/" (compost-date time) ".txt"))))
+
+;;;###autoload
+(defun compost-add-to-curing (&optional topic time)
+  "Adds a new entry into the configured 'compost-directory.
+
+This is an ACTION.
+
+Arguments
+=========
+
+TIME <number> or <list> or <nil>: A valid time, as specified by
+format-time-string. Usually either UNIX seconds or '(HI LO US
+PS). nil will use the current time.
+
+Returns
+=======
+
+Undefined.
+
+Impurities
+==========
+
+Used entirely for Side Effects: Creates a new buffer associated
+with a file in the compost directory for the current second in
+local time, in which the user can add notes."  
+  (interactive "sTopic for Curing Compost: ")
+  (let ((filename (concat compost-curing-directory "/"
+              (compost-date time) "-" topic ".org")))
+    (progn
+      (find-file
+       (file-truename
+        filename))
+      (if (not (file-exists-p filename))
+          (insert (concat "* " topic (newline)))))))
 
 ;;;###autoload
 (defun compost-transplant ()
