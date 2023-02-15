@@ -28,6 +28,7 @@
 
 (require 'deadgrep)
 (require 'pdf-annot)
+(require 'ebib)
 
 (defgroup compost nil
   "An implementation of a variation on the Zettelkasten method of
@@ -153,6 +154,8 @@ Used entirely for Side Effects: Creates a new buffer associated
 with a file in the compost directory for the current second in
 local time, in which the user can add notes."  
   (interactive)
+  (unless ebib--initialized
+    (ebib-init))
   (let* ((entry
          (caar (ebib-read-entry "Compost Meso for Entry: "
                                 ebib--databases 'multiple)))
@@ -190,6 +193,8 @@ Used entirely for Side Effects: Creates a new buffer associated
 with a file in the compost directory for the current second in
 local time, in which the user can add notes."  
   (interactive)
+  (unless ebib--initialized
+    (ebib-init))
   (find-file
    (file-truename
     (concat compost-thermo-directory "/" (compost-date time) ".txt"))))
@@ -219,14 +224,17 @@ Used entirely for Side Effects: Creates a new buffer associated
 with a file in the compost directory for the current second in
 local time, in which the user can add notes."  
   (interactive "sTopic for Curing Compost: ")
+  (unless ebib--initialized
+    (ebib-init))
   (let ((filename (concat compost-curing-directory "/"
-              (compost-date time) "-" topic ".org")))
+                          topic ".org")))
     (progn
       (find-file
        (file-truename
         filename))
       (if (not (file-exists-p filename))
-          (insert (concat "* " topic (newline)))))))
+          (insert (concat "* " topic "\n")))
+      (insert (concat "** " (compost-date time) "\n")))))
 
 ;;;###autoload
 (defun compost-transplant ()
@@ -275,21 +283,21 @@ switches again."
 
 ;;;###autoload
 (defvar compost-prefix-map
-  (let ((map (make-keymap)))
-    (define-key map (kbd "m") #'compost-add-meso)
-    (define-key map (kbd "t") #'compost-add-thermo)
-    (define-key map (kbd "c") #'compost-add-curing)
-    (define-key map (kbd "C-m") #'compost-search-meso)
-    (define-key map (kbd "C-t") #'compost-search-thermo)
-    (define-key map (kbd "C-c") #'compost-search-curing)
-    (define-key map (kbd "w") #'compost-transplant)
-    (define-key map (kbd "<mouse-1>") #'compost-annotation-new)
-    (define-key map (kbd "<mouse-3>") #'compost-annotation-done)
+  (let ((map (make-sparse-keymap)))
+    (define-key map "m" 'compost-add-to-meso)
+    (define-key map "t" 'compost-add-to-thermo)
+    (define-key map "c" 'compost-add-to-curing)
+    (define-key map "M" 'compost-search-meso)
+    (define-key map "T" 'compost-search-thermo)
+    (define-key map "C" 'compost-search-curing)
+    (define-key map "w" 'compost-transplant)
+    (define-key map "<mouse-1>" 'compost-annotation-new)
+    (define-key map "<mouse-3>" 'compost-annotation-done)
     map)
   "Keymap for Compost Prefix")
 
 ;;;###autoload
-(define-prefix-command 'compost-prefix compost-prefix-map "Compost")
+(fset 'compost-prefix compost-prefix-map)
 
 
 (defun compost-date (&optional time)
