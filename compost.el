@@ -554,5 +554,36 @@ Impurities
 Relies on the current buffer state."
   (buffer-substring-no-properties (point-min) (point-max)))
 
+(defun compost-create-link (filename)
+  "Create an org link to a file in the compost thermo directory.
+
+This is an ACTION.
+
+Arguments
+=========
+
+FILENAME <string>: The file to be linked to.
+
+Returns
+=======
+
+<undefined>
+
+
+Impurities
+==========
+I/O, relies on state of underlying system."
+  (interactive (list
+                (read-file-name
+                 "Which file should be linked? "
+                 compost-thermo-directory)))
+  (insert
+   (concat "[[../thermo/"
+           (file-name-nondirectory filename)
+           "][" (car (last (with-temp-buffer
+                             (insert-file-contents filename)
+                             (split-string (buffer-string) "\n" t))))
+           "]]")))
+
 (provide 'compost)
 ;;; compost.el ends here
