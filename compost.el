@@ -580,10 +580,10 @@ I/O, relies on state of underlying system."
   (insert
    (concat "[[../thermo/"
            (file-name-nondirectory filename)
-           "][" (car (last (with-temp-buffer
+           "][(" (car (last (with-temp-buffer
                              (insert-file-contents filename)
                              (split-string (buffer-string) "\n" t))))
-           "]]")))
+           ")]]")))
 
 (provide 'compost)
 ;;; compost.el ends here
