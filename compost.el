@@ -2,7 +2,7 @@
 
 ;; Copyright (C) 2023  Christopher Rodriguez
 
-;; Author: Christopher Rodriguez <>
+;; Author: Christopher Rodriguez <yewscion@gmail.com>
 ;; Keywords: convenience, files, outlines
 
 ;; This program is free software; you can redistribute it and/or modify
