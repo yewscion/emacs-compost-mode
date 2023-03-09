@@ -554,6 +554,7 @@ Impurities
 Relies on the current buffer state."
   (buffer-substring-no-properties (point-min) (point-max)))
 
+;;;###autoload
 (defun compost-create-org-link (filename)
   "Create an org link to a file in the compost thermo directory.
 
