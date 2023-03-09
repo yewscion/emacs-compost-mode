@@ -291,6 +291,7 @@ switches again."
     (define-key map "T" 'compost-search-thermo)
     (define-key map "C" 'compost-search-curing)
     (define-key map "w" 'compost-transplant)
+    (define-key map "l" 'compost-create-org-link)
     (define-key map "<mouse-1>" 'compost-annotation-new)
     (define-key map "<mouse-3>" 'compost-annotation-done)
     map)
