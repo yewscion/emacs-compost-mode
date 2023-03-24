@@ -157,8 +157,8 @@ local time, in which the user can add notes."
   (unless ebib--initialized
     (ebib-init))
   (let* ((entry
-         (caar (ebib-read-entry "Compost Meso for Entry: "
-                                ebib--databases 'multiple)))
+          (caar (ebib-read-entry "Compost Meso for Entry: "
+                                 ebib--databases 'multiple)))
          (filename (concat compost-meso-directory "/" entry ".org")))
     (progn
       (find-file
@@ -583,9 +583,169 @@ I/O, relies on state of underlying system."
    (concat "[[../thermo/"
            (file-name-nondirectory filename)
            "][(" (car (last (with-temp-buffer
-                             (insert-file-contents filename)
-                             (split-string (buffer-string) "\n" t))))
+                              (insert-file-contents filename)
+                              (split-string (buffer-string) "\n" t))))
            ")]]")))
 
+;;;###autoload
+(defun compost-cure-thermo-link (filename)
+  "Create an org link to a file in the compost thermo directory.
+
+This is an ACTION.
+
+Arguments
+=========
+
+FILENAME <string>: The file to be linked to.
+
+Returns
+=======
+
+<undefined>
+
+
+Impurities
+==========
+I/O, relies on state of underlying system."
+  (interactive (list
+                (read-file-name
+                 "Which file should be linked? "
+                 compost-thermo-directory)))
+  (insert (compost--curing-link-to-thermo-section filename)))
+
+(defun compost--curing-link-to-thermo-section (filename)
+  (let* ((basename (file-name-nondirectory filename))
+         (contents (f-read-text filename))
+         (reference-string
+          (car (last (split-string contents "\n" t)))))
+    (save-excursion
+      (end-of-buffer)
+      (insert
+       (compost--generate-cured-thermo-section
+        basename reference-string contents))
+      (substring-no-properties (org-store-link nil nil)))))
+
+(defun compost--generate-cured-thermo-section
+    (basename reference-string file-contents)
+  (concat "** [[../thermo/" basename "][(" reference-string ")]]\n\n"
+          "#+begin_quote\n"
+          file-contents
+          "#+end_quote\n\n"))
+
+(defun compost-number ()
+  (interactive)
+  (let ((compost-number-file (concat compost-thermo-directory "/.compost-number")))
+    (if (not (file-exists-p compost-number-file))
+        (with-temp-file compost-number-file
+          (insert "0")))
+    (let ((number (string-to-number (f-read-text compost-number-file))))
+      (insert (compost-encode-id number))
+      (with-temp-file compost-number-file
+        (insert (number-to-string (1+ number)))))))
+
+(defun compost--number-to-base42-list (number)
+  (let* ((highest-rank-needed (compost--highest-rank-needed number 42))
+         (rank (compost-base-rank 42 highest-rank-needed)))
+    (cond ((or (= number 0)
+               (= rank 1))
+           (list number))
+          (t
+           (cons (/ number rank)
+                 (compost--number-to-base42-list (mod number rank)))))))
+
+(defun compost--number-from-base42-list (number-list &optional total rank)
+  (let* ((rank (if rank rank 0))
+         (total (if total total 0))
+         (factor (expt 42 rank)))
+    (cond ((eq '() number-list)
+           total)
+          (t
+           (compost--number-from-base42-list
+            (reverse (seq-drop (reverse number-list) 1))
+            (+ (* (car (last number-list)) factor) total)
+            (1+ rank))))))
+
+(defun compost--encode-number-list (number-list)
+  (string-join
+   (mapcar
+    (lambda (x)
+      (string (nth x compost-id-char-set)))
+    number-list)))
+
+(defun compost--decode-number-string (number-string)
+  (mapcar
+   (lambda (x)
+     (cl-position x compost-id-char-set))
+   (string-to-list number-string)))
+
+(defun compost-encode-id (number)
+  (interactive)
+  (let ((our-list (compost--number-to-base42-list number)))
+    (while (< (length our-list) 8)
+      (push 0 our-list))
+    (compost--encode-number-list our-list)))
+
+(defun compost-decode-id (number)
+  (interactive)
+  (compost--number-from-base42-list (compost--decode-number-string number)))
+
+(defun compost-base-rank (base rank)
+  (if (<= rank 0)
+      0
+    (expt base (- rank 1))))
+
+(defun compost--highest-rank-needed (number base &optional guess)
+  (let ((guess (if guess guess 0)))
+    (if (> (expt base guess) number)
+        guess
+      (compost--highest-rank-needed number base (+ guess 1)))))
+
+
+(defconst compost-id-char-set
+  '(
+    ?\x2654  ; 0
+    ?\x2655  ; 1
+    ?\x2656  ; 2
+    ?\x2657  ; 3
+    ?\x2658  ; 4
+    ?\x2659  ; 5
+    ?\x265A  ; 6
+    ?\x265B  ; 7
+    ?\x265C  ; 8
+    ?\x265D  ; 9
+    ?\x265E  ; 10
+    ?\x265F  ; 11
+    ?\x2660  ; 12
+    ?\x2661  ; 13
+    ?\x2662  ; 14
+    ?\x2663  ; 15
+    ?\x2664  ; 16
+    ?\x2665  ; 17
+    ?\x2666  ; 18
+    ?\x2667  ; 19
+    ?\x2680  ; 20
+    ?\x2681  ; 21
+    ?\x2582  ; 22
+    ?\x2583  ; 23
+    ?\x2584  ; 24
+    ?\x2585  ; 25
+    ?\x2586  ; 26
+    ?\x2587  ; 27
+    ?\x2588  ; 28
+    ?\x2589  ; 29
+    ?\x2704  ; 30
+    ?\x2706  ; 31
+    ?\x2707  ; 32
+    ?\x2708  ; 33
+    ?\x2709  ; 34
+    ?\x270C  ; 35
+    ?\x270D  ; 36
+    ?\x270F  ; 37
+    ?\x2711  ; 38
+    ?\x2712  ; 39
+    ?\x2713  ; 40
+    ?\x2715  ; 41
+    )
+  "This is a set of characters used to encode the id number of compost thermo notes.")
 (provide 'compost)
 ;;; compost.el ends here
