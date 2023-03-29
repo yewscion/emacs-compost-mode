@@ -774,11 +774,17 @@ I/O, relies on state of underlying system."
       0
     (expt base (- rank 1))))
 
-(fset 'compost-meso-new-thought
-      (kmacro-lambda-form
-       [?\M-> escape return ?\C-c ?\C-t ?t ?\"
-              ?\" ?\S- ?p ?. ?\C-b ?\C-b ?\C-b ?\C-b tab]
-       0 "%d"))
+(defun compost-meso-new-thought ()
+  (interactive)
+  (progn
+    (save-buffer)
+    (org-fold-show-all)
+    (end-of-buffer)
+    (org-insert-heading-respect-content t)
+    (org-todo "THOUGHT")
+    (insert "\"\" p.")
+    (backward-char 4)
+    (org-fold-hide-sublevels 2)))
 
 
 (provide 'compost)
