@@ -748,6 +748,12 @@ I/O, relies on state of underlying system."
      (cl-position x compost-id-char-set))
    (string-to-list number-string)))
 
+(defun compost--highest-rank-needed (number base &optional guess)
+  (let ((guess (if guess guess 0)))
+    (if (> (expt base guess) number)
+        guess
+      (compost--highest-rank-needed number base (+ guess 1)))))
+
 (defun compost-encode-id (number)
   (interactive)
   (let ((our-list (compost--number-to-base42-list number)))
@@ -764,11 +770,6 @@ I/O, relies on state of underlying system."
       0
     (expt base (- rank 1))))
 
-(defun compost--highest-rank-needed (number base &optional guess)
-  (let ((guess (if guess guess 0)))
-    (if (> (expt base guess) number)
-        guess
-      (compost--highest-rank-needed number base (+ guess 1)))))
 
 
 (provide 'compost)
