@@ -625,18 +625,23 @@ I/O, relies on state of underlying system."
 (defun compost--curing-link-to-thermo-section (filename)
   (let* ((basename (file-name-nondirectory filename))
          (contents (f-read-text filename))
+         (note-lines (split-string contents "\n" t))
          (reference-string
-          (car (last (split-string contents "\n" t)))))
+          (car (last note-lines)))
+         (id-string
+          (car (last note-lines 2))))
     (save-excursion
       (end-of-buffer)
       (insert
        (compost--generate-cured-thermo-section
-        basename reference-string contents))
+        basename reference-string id-string contents))
       (substring-no-properties (org-store-link nil nil)))))
 
 (defun compost--generate-cured-thermo-section
-    (basename reference-string file-contents)
-  (concat "** [[../thermo/" basename "][(" reference-string ")]]\n\n"
+    (basename reference-string id-string file-contents)
+  (concat
+   "** [[../thermo/" basename "][<" id-string ">]]\n\n"
+   ":PROPERTIES:\n:reference:      " reference-string "\n:END:\n\n"
           "#+begin_quote\n"
           file-contents
           "#+end_quote\n\n"))
