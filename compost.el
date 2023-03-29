@@ -63,6 +63,62 @@ end with a slash."
   :safe 'stringp
   :group 'compost)
 
+(defcustom compost-thermo-number-file (expand-file-name
+                                (concat compost-thermo-directory
+                                        "/.compost-number"))
+  "The file storing how many thermo notes You have, which
+increments on every number You assign." 
+  :type 'file
+  :safe 'stringp
+  :group 'compost)
+
+(defconst compost-id-char-set
+  '(
+    ?\x2654  ; 0
+    ?\x2655  ; 1
+    ?\x2656  ; 2
+    ?\x2657  ; 3
+    ?\x2658  ; 4
+    ?\x2659  ; 5
+    ?\x265A  ; 6
+    ?\x265B  ; 7
+    ?\x265C  ; 8
+    ?\x265D  ; 9
+    ?\x265E  ; 10
+    ?\x265F  ; 11
+    ?\x2660  ; 12
+    ?\x2661  ; 13
+    ?\x2662  ; 14
+    ?\x2663  ; 15
+    ?\x2664  ; 16
+    ?\x2665  ; 17
+    ?\x2666  ; 18
+    ?\x2667  ; 19
+    ?\x2680  ; 20
+    ?\x2681  ; 21
+    ?\x2682  ; 22
+    ?\x2683  ; 23
+    ?\x2684  ; 24
+    ?\x2685  ; 25
+    ?\x2686  ; 26
+    ?\x2687  ; 27
+    ?\x2688  ; 28
+    ?\x2689  ; 29 *
+    ?\x2704  ; 30
+    ?\x2706  ; 31
+    ?\x2707  ; 32
+    ?\x2708  ; 33
+    ?\x2709  ; 34
+    ?\x270C  ; 35
+    ?\x270D  ; 36
+    ?\x270F  ; 37
+    ?\x2711  ; 38
+    ?\x2712  ; 39
+    ?\x2713  ; 40
+    ?\x2715  ; 41
+    )
+  "This is a set of characters used to encode the id number of compost thermo notes.")
+
 ;;;###autoload
 (defun compost-search-meso (regex)
   "Search through the compost \"meso\" directory for matches of REGEX.
@@ -715,51 +771,5 @@ I/O, relies on state of underlying system."
       (compost--highest-rank-needed number base (+ guess 1)))))
 
 
-(defconst compost-id-char-set
-  '(
-    ?\x2654  ; 0
-    ?\x2655  ; 1
-    ?\x2656  ; 2
-    ?\x2657  ; 3
-    ?\x2658  ; 4
-    ?\x2659  ; 5
-    ?\x265A  ; 6
-    ?\x265B  ; 7
-    ?\x265C  ; 8
-    ?\x265D  ; 9
-    ?\x265E  ; 10
-    ?\x265F  ; 11
-    ?\x2660  ; 12
-    ?\x2661  ; 13
-    ?\x2662  ; 14
-    ?\x2663  ; 15
-    ?\x2664  ; 16
-    ?\x2665  ; 17
-    ?\x2666  ; 18
-    ?\x2667  ; 19
-    ?\x2680  ; 20
-    ?\x2681  ; 21
-    ?\x2582  ; 22
-    ?\x2583  ; 23
-    ?\x2584  ; 24
-    ?\x2585  ; 25
-    ?\x2586  ; 26
-    ?\x2587  ; 27
-    ?\x2588  ; 28
-    ?\x2589  ; 29
-    ?\x2704  ; 30
-    ?\x2706  ; 31
-    ?\x2707  ; 32
-    ?\x2708  ; 33
-    ?\x2709  ; 34
-    ?\x270C  ; 35
-    ?\x270D  ; 36
-    ?\x270F  ; 37
-    ?\x2711  ; 38
-    ?\x2712  ; 39
-    ?\x2713  ; 40
-    ?\x2715  ; 41
-    )
-  "This is a set of characters used to encode the id number of compost thermo notes.")
 (provide 'compost)
 ;;; compost.el ends here
