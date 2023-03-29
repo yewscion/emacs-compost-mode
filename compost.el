@@ -770,6 +770,11 @@ I/O, relies on state of underlying system."
       0
     (expt base (- rank 1))))
 
+(fset 'compost-meso-new-thought
+      (kmacro-lambda-form
+       [?\M-> escape return ?\C-c ?\C-t ?t ?\"
+              ?\" ?\S- ?p ?. ?\C-b ?\C-b ?\C-b ?\C-b tab]
+       0 "%d"))
 
 
 (provide 'compost)
