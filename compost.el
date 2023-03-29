@@ -232,6 +232,7 @@ local time, in which the user can add notes."
       (if (not (file-exists-p filename))
           (insert (concat "* " entry "\n"
                           "[[ebib:" entry "][Ebib Entry]]\n")))
+      (use-local-map (copy-keymap org-mode-map))
       (local-set-key (kbd "C-c C-c") #'compost-meso-new-thought))))
 
 ;;;###autoload
