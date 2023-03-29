@@ -702,17 +702,6 @@ I/O, relies on state of underlying system."
           file-contents
           "#+end_quote\n\n"))
 
-(defun compost-number ()
-  (interactive)
-  (let ((compost-number-file (concat compost-thermo-directory "/.compost-number")))
-    (if (not (file-exists-p compost-number-file))
-        (with-temp-file compost-number-file
-          (insert "0")))
-    (let ((number (string-to-number (f-read-text compost-number-file))))
-      (insert (compost-encode-id number))
-      (with-temp-file compost-number-file
-        (insert (number-to-string (1+ number)))))))
-
 (defun compost--number-to-base42-list (number)
   (let* ((highest-rank-needed (compost--highest-rank-needed number 42))
          (rank (compost-base-rank 42 highest-rank-needed)))
@@ -753,6 +742,17 @@ I/O, relies on state of underlying system."
     (if (> (expt base guess) number)
         guess
       (compost--highest-rank-needed number base (+ guess 1)))))
+
+(defun compost-add-thermo-number ()
+  (interactive)
+    (if (not (file-exists-p compost-thermo-number-file))
+        (with-temp-file compost-thermo-number-file
+          (insert "0")))
+    (let ((number (string-to-number (f-read-text
+                                     compost-thermo-number-file))))
+      (insert (compost-encode-id number))
+      (with-temp-file compost-thermo-number-file
+        (insert (number-to-string (1+ number))))))
 
 (defun compost-encode-id (number)
   (interactive)
