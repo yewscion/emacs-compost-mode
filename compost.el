@@ -293,12 +293,12 @@ switches again."
 ;;;###autoload
 (defvar compost-prefix-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "m" 'compost-add-to-meso)
-    (define-key map "t" 'compost-add-to-thermo)
-    (define-key map "c" 'compost-add-to-curing)
-    (define-key map "M" 'compost-search-meso)
-    (define-key map "T" 'compost-search-thermo)
-    (define-key map "C" 'compost-search-curing)
+    (define-key map "M" 'compost-add-to-meso)
+    (define-key map "T" 'compost-add-to-thermo)
+    (define-key map "C" 'compost-add-to-curing)
+    (define-key map "m" 'compost-search-meso)
+    (define-key map "t" 'compost-search-thermo)
+    (define-key map "c" 'compost-search-curing)
     (define-key map "w" 'compost-transplant)
     (define-key map "l" 'compost-create-org-link)
     (define-key map "<mouse-1>" 'compost-annotation-new)
