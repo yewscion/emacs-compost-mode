@@ -695,7 +695,7 @@ I/O, relies on state of underlying system."
 (defun compost-encode-id (number)
   (interactive)
   (let ((our-list (compost--number-to-base42-list number)))
-    (while (< (length our-list) 8)
+    (while (< (length our-list) 5)
       (push 0 our-list))
     (compost--encode-number-list our-list)))
 
