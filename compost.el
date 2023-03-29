@@ -36,20 +36,29 @@ notetaking in GNU Emacs, leveraging org-mode, plain-text, and
 pdf-tools to create a directory of notes."
   :group 'text)
 
-(defcustom compost-meso-directory (expand-file-name "~/.compost/meso")
+(defcustom compost-main-directory (expand-file-name "~/.compost")
   "The directory for storing Your compost. Shouldn't end with a slash."
+  :type 'directory
+  :safe 'stringp
+  :group 'compost)
+
+(defcustom compost-meso-directory (expand-file-name "~/.compost/meso")
+  "The directory for storing Your compost's meso notes. Shouldn't
+end with a slash."
   :type 'directory
   :safe 'stringp
   :group 'compost)
 
 (defcustom compost-thermo-directory (expand-file-name "~/.compost/thermo")
-  "The directory for storing Your compost. Shouldn't end with a slash."
+  "The directory for storing Your compost's thermo notes. Shouldn't
+end with a slash."
   :type 'directory
   :safe 'stringp
   :group 'compost)
 
 (defcustom compost-curing-directory (expand-file-name "~/.compost/curing")
-  "The directory for storing Your compost. Shouldn't end with a slash."
+  "The directory for storing Your compost's curing notes. Shouldn't
+end with a slash."
   :type 'directory
   :safe 'stringp
   :group 'compost)
