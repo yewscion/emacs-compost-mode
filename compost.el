@@ -231,7 +231,8 @@ local time, in which the user can add notes."
         filename))
       (if (not (file-exists-p filename))
           (insert (concat "* " entry "\n"
-                          "[[ebib:" entry "][Ebib Entry]]\n"))))))
+                          "[[ebib:" entry "][Ebib Entry]]\n")))
+      (local-set-key (kbd "C-c C-c") #'compost-meso-new-thought))))
 
 ;;;###autoload
 (defun compost-add-to-thermo (&optional time)
