@@ -29,7 +29,7 @@
 (require 'deadgrep)
 (require 'pdf-annot)
 (require 'ebib)
-(require 'org)
+(require 'org-fold)
 (require 'f)
 
 (defgroup compost nil
