@@ -29,6 +29,8 @@
 (require 'deadgrep)
 (require 'pdf-annot)
 (require 'ebib)
+(require 'org)
+(require 'f)
 
 (defgroup compost nil
   "An implementation of a variation on the Zettelkasten method of
@@ -117,7 +119,8 @@ increments on every number You assign."
     ?\x2713  ; 40
     ?\x2715  ; 41
     )
-  "This is a set of characters used to encode the id number of compost thermo notes.")
+  "This is a set of characters used to encode the id number of
+compost thermo notes.")
 
 ;;;###autoload
 (defun compost-search-meso (regex)
@@ -195,7 +198,7 @@ arguments, one obtained through a prompt."
     (deadgrep regex compost-curing-directory)))
 
 ;;;###autoload
-(defun compost-add-to-meso (&optional entry)
+(defun compost-add-to-meso ()
   "Adds a new entry into the configured 'compost-meso-directory.
 
 This is an ACTION.
@@ -779,7 +782,7 @@ I/O, relies on state of underlying system."
   (progn
     (save-buffer)
     (org-fold-show-all)
-    (end-of-buffer)
+    (goto-char (point-max))
     (org-insert-heading-respect-content t)
     (org-todo "THOUGHT")
     (insert "\"\" p.")
