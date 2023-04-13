@@ -694,7 +694,7 @@ I/O, relies on state of underlying system."
          (id-string
           (car (last note-lines 2))))
     (save-excursion
-      (end-of-buffer)
+      (goto-char (point-max))
       (insert
        (compost--generate-cured-thermo-section
         basename reference-string id-string contents))
